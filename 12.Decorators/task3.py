@@ -14,17 +14,14 @@
 #If some of the rules' checks returns False, the function should return False and print the reason it failed; otherwise, return the result.
 
 
+
 def arg_rules(type_, max_length, contains):
     def decorator(func):
-        def wrapper(*args, **kwargs):
-            if not all([
-                isinstance(arg, type_),
-                all(len(arg) <= max_length for arg in args),
-                all(any(symbol in arg for symbol in contains) for arg in args)
-            ]):
-                print("Error: Argument validation failed.")
+        def wrapper(arg):
+            if not isinstance(arg, type_) or len(arg) > max_length or not all(symbol in arg for symbol in contains):
+                print("Invalid argument.")
                 return False
-            return func(*args, **kwargs)
+            return func(arg)
         return wrapper
     return decorator
 
